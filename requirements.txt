@@ -1,0 +1,11 @@
+﻿# requirements.txt
+# Dependências do Projeto 2 - API REST
+
+# Core - Framework Web
+fastapi==0.115.0
+
+# Servidor - ASGI Server
+uvicorn[standard]==0.32.0
+
+# Validação - Data Validation
+pydantic==2.10.0

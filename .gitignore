@@ -1,0 +1,21 @@
+﻿# Ambiente virtual
+venv/
+
+# Banco de dados
+data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# VS Code
+.vscode/
+
+# Arquivos temporarios
+*.tmp
+*.log
+update.py
+setup.py
