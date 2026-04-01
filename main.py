@@ -5,7 +5,7 @@ Sistema interativo completo com gerenciamento de clientes e auditoria de requisi
 
 Autor: [Cristóvão Caldeira]
 Data: Janeiro 2026
-Projeto: Portfólio Python - Projeto 1/5
+Projeto: Portfólio Python - Projeto 4/5
 """
 
 import time
