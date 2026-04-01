@@ -3,7 +3,7 @@ Motor de Decisão Automatizado para API B2B de Validação de Dados
 
 Sistema interativo completo com gerenciamento de clientes e auditoria de requisições.
 
-Autor: [Seu Nome]
+Autor: [Cristóvão Caldeira]
 Data: Janeiro 2026
 Projeto: Portfólio Python - Projeto 1/5
 """
