@@ -6,7 +6,7 @@ Acesso restrito a administradores do sistema.
 
 Autor: Cristovao Caldeira
 Data: Fevereiro 2026
-Projeto: Portfolio Python - Projeto 2/5
+Projeto: Portfolio Python - Projeto 4/5
 """
 
 from fastapi import FastAPI, HTTPException, status, Request
