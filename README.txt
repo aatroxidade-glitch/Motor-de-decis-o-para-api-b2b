@@ -2,11 +2,13 @@
 
 > Sistema de decisão inteligente para validação de dados em ambiente SaaS B2B
 
-[![Python](https://img.shields.io/badge/Python-3.14-blue.svg)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Produção-green.svg)]()
+[![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green.svg)](https://fastapi.tiangolo.com/)
+[![SQLite](https://img.shields.io/badge/SQLite-3-lightblue.svg)](https://www.sqlite.org/)
+[![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow.svg)]()
 [![Arquitetura](https://img.shields.io/badge/Arquitetura-DDD-orange.svg)]()
 
-**Projeto 1 de 5** — Portfólio Python: Arquitetura de Lógica, Sistemas e Decisão Automatizada
+**Projeto 3 de 5** — Portfólio Python: Arquitetura de Lógica, Sistemas e Decisão Automatizada
 
 ---
 
@@ -17,9 +19,9 @@
 - [Funcionalidades](#funcionalidades)
 - [Arquitetura](#arquitetura)
 - [Como Executar](#como-executar)
+- [Endpoints da API](#endpoints-da-api)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Decisões de Design](#decisões-de-design)
 - [Roadmap](#roadmap)
 - [Autor](#autor)
 
@@ -27,27 +29,21 @@
 
 ## 🎯 Sobre o Projeto
 
-Este projeto implementa o **núcleo lógico** de uma API SaaS B2B de validação de dados, demonstrando:
+Sistema completo de decisão automatizada B2B com API REST, autenticação, persistência e auditoria. Construído em 5 projetos progressivos demonstrando evolução técnica real.
 
-- ✅ Modelagem de domínio profissional
-- ✅ Arquitetura em camadas (Domain-Driven Design)
-- ✅ Motor de decisão automatizado
-- ✅ Sistema de auditoria completo
-- ✅ Controle de limites por plano comercial
+### Projetos Concluídos
 
-### Objetivo do Portfólio
-
-Demonstrar capacidade de:
-- Modelar sistemas reais
-- Aplicar arquitetura de software
-- Escrever código limpo e profissional
-- Resolver problemas de mercado
+| Projeto | Descrição | Status |
+|---------|-----------|--------|
+| **1** | Motor de decisão puro em Python | ✅ Concluído |
+| **2** | API REST com FastAPI e autenticação | ✅ Concluído |
+| **3** | Persistência com SQLite e auditoria | ✅ Concluído |
+| **4** | Qualidade e observabilidade | 🔄 Em desenvolvimento |
+| **5** | SaaS completo com interface web | ⏳ Planejado |
 
 ---
 
 ## 💼 Problema Resolvido
-
-### Contexto de Mercado
 
 Empresas SaaS B2B que oferecem serviços de validação de dados via API enfrentam desafios:
 
@@ -56,34 +52,21 @@ Empresas SaaS B2B que oferecem serviços de validação de dados via API enfrent
 - **Validação de Dados:** Como garantir que payloads estão corretos?
 - **Decisões Automáticas:** Como aprovar/rejeitar sem intervenção humana?
 - **Auditoria:** Como rastrear e justificar cada decisão?
-
-### Solução Implementada
-
-Sistema completo que:
-
-1. **Valida automaticamente** requisições de clientes
-2. **Aplica regras de negócio** baseadas em planos contratados
-3. **Controla limites** de uso em tempo real
-4. **Registra e audita** todas as decisões
-5. **Fornece justificativas** explícitas para cada resultado
+- **Persistência:** Como garantir que dados sobrevivem a reinicializações?
 
 ---
 
 ## ⚡ Funcionalidades
 
-### 1. Validação de Dados
-
-**3 Tipos de Validação Suportados:**
+### Validação de Dados
 
 | Tipo | Campos Obrigatórios | Caso de Uso |
 |------|---------------------|-------------|
 | **CPF** | cpf, nome | Onboarding, KYC |
-| **Endereço** | cep, logradouro, numero | E-commerce, Logística |
-| **Dados Bancários** | banco, agencia, conta | Fintechs, Pagamentos |
+| **Endereço** | cep, logradouro, numero, cidade, estado | E-commerce, Logística |
+| **Dados Bancários** | banco, agencia, conta, digito | Fintechs, Pagamentos |
 
-### 2. Planos Comerciais
-
-**3 Planos com Limites Diferentes:**
+### Planos Comerciais
 
 | Plano | Requests/mês | Tamanho Max | Tipos Permitidos |
 |-------|--------------|-------------|------------------|
@@ -91,81 +74,66 @@ Sistema completo que:
 | **Silver** | 500 | 10 KB | CPF + Endereço |
 | **Gold** | 2.000 | 100 KB | Todos os tipos |
 
-### 3. Motor de Decisão
+### Motor de Decisão — 6 Etapas Fail-Fast
 
-**Validações Executadas (sequencial, fail-fast):**
+1. Tipo de validação é permitido pelo plano?
+2. Payload tem estrutura válida?
+3. Campos obrigatórios estão presentes?
+4. Tipos de dados estão corretos?
+5. Tamanho do payload cabe no limite?
+6. Cliente não excedeu limite de requisições?
 
-1. ✅ Tipo de validação é permitido pelo plano?
-2. ✅ Payload tem estrutura válida (dict não vazio)?
-3. ✅ Campos obrigatórios estão presentes?
-4. ✅ Tipos de dados estão corretos?
-5. ✅ Tamanho do payload cabe no limite?
-6. ✅ Cliente não excedeu limite de requests?
+### Autenticação em Duas Camadas
 
-**Resultado:** Decisão aprovada ou rejeitada com motivo explícito
+- **Admin Key** — acesso ao painel administrativo
+- **Client Key** — acesso ao endpoint de validação
 
-### 4. Sistema de Auditoria
+### Auditoria Completa
 
-- 📝 Registro completo de todas as decisões
-- 🕒 Timeline de eventos com timestamps precisos
-- 🔍 Rastreamento por cliente, período ou motivo
-- 📊 Reconstrução de estado completa
-- ✅ Compliance (LGPD, GDPR)
+- Histórico permanente de todas as requisições e decisões
+- Filtros por status, tipo e data
+- Estatísticas globais do sistema
+- Imutabilidade garantida por design
 
 ---
 
 ## 🏗️ Arquitetura
 
 ### Visão em Camadas (Domain-Driven Design)
-
 ```
 ┌─────────────────────────────────────────┐
-│          INTERFACE LAYER                │  ← Pontos de entrada
-│  (CLI, Menu, Futuros endpoints REST)    │
+│          INTERFACE LAYER                │
+│  API REST (FastAPI) + Painel Admin      │
 └─────────────────────────────────────────┘
                    ↓
 ┌─────────────────────────────────────────┐
-│        APPLICATION LAYER                │  ← Orquestração
+│        APPLICATION LAYER                │
 │  • DecisionEngine (motor de decisão)    │
-│  • Simulator (demonstração)             │
-│  • TestScenarios (validação)            │
-│  • AuditDemo (auditoria)                │
+│  • Converters (transformações)          │
 └─────────────────────────────────────────┘
                    ↓
 ┌─────────────────────────────────────────┐
-│          DOMAIN LAYER                   │  ← Regras de negócio
-│  • Client (identidade e uso)            │
-│  • Plan (limites comerciais)            │
-│  • Payload (auto-validação)             │
-│  • Request (ato de consumo)             │
-│  • Decision (resultado)                 │
+│          DOMAIN LAYER                   │
+│  • Client, Plan, Payload                │
+│  • Request, Decision                    │
 └─────────────────────────────────────────┘
                    ↓
 ┌─────────────────────────────────────────┐
-│      INFRASTRUCTURE LAYER               │  ← Persistência (futuro)
-│  (Preparado para Projeto 2)             │
+│      INFRASTRUCTURE LAYER               │
+│  • SQLite (banco de dados)              │
+│  • Repositories (persistência)          │
 └─────────────────────────────────────────┘
 ```
 
-### Regra de Dependência
-
+### Fluxo de uma Requisição
 ```
-Interface → Application → Domain
-              ↑
-        Infrastructure
-```
-
-**Princípio:** Dependências fluem sempre para dentro, nunca reverso.
-
-### Fluxo de Uma Requisição
-
-```
-1. Cliente + Payload → Request criado
-2. Request → DecisionEngine.evaluate()
-3. Motor executa 6 validações sequenciais
-4. Decisão gerada (aprovada ou rejeitada)
-5. Se aprovada: incrementa uso do cliente
-6. Decision retornada com motivo explícito
+Cliente → POST /validate + Client Key
+    → auth_middleware (valida key + carrega cliente do banco)
+    → DecisionEngine (6 validações fail-fast)
+    → requisicao_repo.inserir()
+    → decisao_repo.inserir()
+    → cliente_repo.atualizar_uso()
+    → Response (approved/rejected)
 ```
 
 ---
@@ -174,257 +142,157 @@ Interface → Application → Domain
 
 ### Pré-requisitos
 
-- Python 3.14+
-- Nenhuma dependência externa (Python puro)
+- Python 3.13+
+- pip
 
 ### Instalação
-
 ```bash
 # Clone o repositório
-git clone <seu-repositorio>
-cd "Motor de decisão automático Saas b2b"
+git clone https://github.com/aatroxidade-glitch/Motor-de-decis-o-para-api-b2b.git
+cd "Motor-de-decis-o-para-api-b2b"
 
-# Não precisa instalar dependências (Python puro)
+# Crie e ative o ambiente virtual
+python -m venv venv
+venv\Scripts\Activate.ps1  # Windows PowerShell
+
+# Instale as dependências
+pip install -r requirements.txt
 ```
 
-### Execução
-
+### Executar a API
 ```bash
-# Executar sistema completo
-python main.py
+python -m uvicorn app.interface.api.main:app --reload
 ```
 
-### O que acontece ao executar
+### Acessar o Painel Administrativo
+```
+http://localhost:8000/docs
+```
 
-1. **Demonstração Rápida:** 6 testes básicos executam automaticamente
-2. **Menu Interativo:** Escolha entre:
-   - Simulador (10 clientes, 50 requisições)
-   - Cenários de Teste (12 cenários específicos)
-   - Demonstração de Auditoria (rastreamento completo)
-   - Executar todos sequencialmente
+A Admin Key é exibida no console do servidor ao inicializar. Use-a no botão **Authorize** do Swagger.
 
-### Exemplos de Uso Programático
-
-```python
-from app.domain.client import Client
-from app.domain.payload import Payload
-from app.domain.request import Request
-from app.domain.plans import BASIC_PLAN
-from app.application.decision_engine import DecisionEngine
-
-# Criar cliente e motor
-cliente = Client(id="001", nome="TechStart LTDA", plan=BASIC_PLAN)
-engine = DecisionEngine()
-
-# Criar payload válido
-payload = Payload(
-    tipo=Payload.TIPO_CPF,
-    dados={"cpf": "12345678900", "nome": "João Silva"}
-)
-
-# Criar requisição e avaliar
-request = Request(client=cliente, payload=payload)
-decision = engine.evaluate(request)
-
-# Verificar resultado
-if decision.is_approved():
-    print(f"✅ Aprovada: {decision.motivo}")
-    print(f"Uso atual: {cliente.requisicoes_usadas}/{cliente.plan.max_requests}")
-else:
-    print(f"❌ Rejeitada: {decision.motivo}")
+### Executar o Motor de Decisão (CLI)
+```bash
+python main.py
 ```
 
 ---
 
-## 📂 Estrutura do Projeto
+## 📡 Endpoints da API
 
+### Monitoramento (Público)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | / | Status da API |
+| GET | /health | Health check |
+
+### Validação (Client Key)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | /validate | Validar dados de cliente |
+
+### Consultas (Admin Key)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | /clients | Listar todos os clientes |
+| GET | /clients/{id} | Detalhes de um cliente |
+| GET | /clients/{id}/requests | Histórico de um cliente |
+
+### Auditoria (Admin Key)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | /audit | Histórico global com filtros |
+| GET | /audit/stats | Estatísticas globais |
+
+### Schemas (Admin Key)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | /schemas/request | Exemplo de request |
+| GET | /schemas/response/approved | Exemplo de aprovação |
+| GET | /schemas/response/rejected | Exemplo de rejeição |
+
+---
+
+## 📂 Estrutura do Projeto
 ```
-Motor de decisão automático Saas b2b/
-│
-├── main.py                          # Ponto de entrada principal
-│
-├── README.md                        # Este arquivo
-├── ARCHITECTURE.md                  # Documentação técnica
-├── API_REFERENCE.md                 # Referência de classes
-│
+Motor-de-decisao-b2b/
+├── data/
+│   └── decisoes.db              # Banco de dados SQLite
+├── main.py                      # Portal CLI (Projeto 1)
+├── requirements.txt
 └── app/
-    ├── __init__.py
-    │
-    ├── domain/                      # Camada de Domínio (regras puras)
-    │   ├── __init__.py
-    │   ├── client.py                # Entidade Cliente
-    │   ├── plan.py                  # Entidade Plano
-    │   ├── payload.py               # Entidade Payload (validação)
-    │   ├── request.py               # Entidade Request
-    │   ├── decision.py              # Entidade Decision
-    │   └── plans.py                 # Catálogo de planos
-    │
-    ├── application/                 # Camada de Aplicação (orquestração)
-    │   ├── __init__.py
-    │   ├── decision_engine.py       # Motor de decisão
-    │   ├── simulator.py             # Simulador de uso real
-    │   ├── test_scenarios.py        # Cenários de teste
-    │   └── audit_demo.py            # Sistema de auditoria
-    │
-    ├── infrastructure/              # Camada de Infraestrutura
-    │   └── __init__.py              # (Preparado para Projeto 2)
-    │
-    └── interface/                   # Camada de Interface
-        └── __init__.py              # (Preparado para Projeto 2)
+    ├── domain/                  # Entidades puras (intocável)
+    │   ├── client.py
+    │   ├── plan.py
+    │   ├── payload.py
+    │   ├── request.py
+    │   ├── decision.py
+    │   └── plans.py
+    ├── application/             # Lógica de negócio
+    │   └── decision_engine.py
+    ├── infrastructure/          # Persistência
+    │   ├── database.py
+    │   ├── cliente_repository.py
+    │   ├── requisicao_repository.py
+    │   ├── decisao_repository.py
+    │   └── repositories.py
+    └── interface/
+        └── api/
+            ├── main.py          # FastAPI app
+            ├── auth_middleware.py
+            ├── api_keys_manager.py
+            ├── rate_limiter.py
+            ├── converters.py
+            ├── engine.py
+            ├── security_headers_middleware.py
+            └── schemas/
+                ├── request_schema.py
+                ├── response_schema.py
+                ├── error_schema.py
+                ├── client_schema.py
+                └── audit_schema.py
 ```
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-### Stack Técnico
-
-- **Linguagem:** Python 3.14 (puro, sem frameworks)
-- **Paradigma:** Programação Orientada a Objetos
-- **Arquitetura:** Domain-Driven Design (DDD)
-- **Padrões:** Strategy, Value Object, Stateful Entities
-
-### Bibliotecas Nativas
-
-```python
-import uuid          # Geração de IDs únicos
-import sys           # Cálculo de tamanho de objetos
-import random        # Geração de cenários variados
-from datetime import datetime  # Timestamp de eventos
-import time          # Efeitos visuais
-```
-
-**Nenhuma dependência externa** — Python puro para máxima portabilidade
-
----
-
-## 🎨 Decisões de Design
-
-### 1. Por que Payload valida a si mesmo?
-
-**Decisão:** Auto-validação (métodos dentro da classe Payload)
-
-**Motivos:**
-- ✅ Encapsulamento: dados e regras juntos
-- ✅ Reutilização: qualquer parte do sistema pode validar
-- ✅ Testabilidade: validação isolada
-- ✅ Manutenção: mudança em regra afeta apenas Payload
-
-### 2. Por que Motor incrementa uso?
-
-**Decisão:** DecisionEngine incrementa `client.requisicoes_usadas`
-
-**Motivos:**
-- ✅ Consistência: aprovação sempre incrementa
-- ✅ Atomicidade: decisão + incremento = operação única
-- ✅ Auditoria: estado muda apenas em aprovações
-- ✅ Simplicidade: não precisa lembrar de incrementar externamente
-
-### 3. Por que Decision é imutável?
-
-**Decisão:** Decision não muda após criação
-
-**Motivos:**
-- ✅ Rastreabilidade: resultado não pode ser alterado
-- ✅ Auditoria: histórico confiável
-- ✅ Thread-safe: pode ser compartilhado sem riscos
-- ✅ Clareza: separação entre decisão e execução
-
-### 4. Por que usar mapas no Payload?
-
-**Decisão:** Validações baseadas em dicionários (data-driven)
-
-**Motivos:**
-- ✅ Escalabilidade: novo tipo = adicionar entrada no mapa
-- ✅ Manutenção: regras centralizadas
-- ✅ Legibilidade: estrutura declarativa
-- ✅ Sem if/elif gigantes: lógica limpa
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| **Python** | 3.13 | Linguagem principal |
+| **FastAPI** | 0.115 | Framework web |
+| **Pydantic** | 2.10 | Validação de dados |
+| **Uvicorn** | latest | Servidor ASGI |
+| **SQLite** | 3 | Banco de dados |
 
 ---
 
 ## 🗺️ Roadmap
 
-### Projeto 1 — Motor de Decisão (ATUAL)
-✅ Python puro, foco em domínio e lógica
-
-### Projeto 2 — API Modularizada (PRÓXIMO)
-- Adicionar FastAPI
-- Endpoints REST
-- Autenticação via API Keys
-- Documentação OpenAPI automática
-
-### Projeto 3 — Persistência e Auditoria
-- Banco de dados (SQLite)
-- Histórico persistente
-- Migrations
-
-### Projeto 4 — Automação e Qualidade
-- Testes automatizados (pytest)
-- Logging estruturado
-- CI/CD
-
-### Projeto 5 — Sistema SaaS Completo
-- Integrações externas
-- Billing
-- Dashboard
-
----
-
-## 📈 Métricas do Projeto
-
-- **Linhas de código:** ~1.200
-- **Classes:** 11 principais
-- **Métodos:** ~50
-- **Cenários de teste:** 12 específicos + 50 simulados
-- **Tipos de validação:** 3
-- **Planos comerciais:** 3
-- **Cobertura funcional:** 100%
-
----
-
-## 🎓 Conceitos Demonstrados
-
-### Arquitetura de Software
-- Domain-Driven Design (DDD)
-- Separation of Concerns
-- Dependency Inversion
-- Single Responsibility Principle
-- Open/Closed Principle
-
-### Programação
-- POO avançada (encapsulamento, herança, polimorfismo)
-- Data-driven validation
-- Fail-fast pattern
-- Stateful vs Stateless
-- Immutability
-
-### Pensamento de Produto
-- Modelagem de planos SaaS
-- Controle de quota
-- Auditabilidade
-- Compliance
+- ✅ **Projeto 1** — Motor de decisão puro em Python
+- ✅ **Projeto 2** — API REST com FastAPI, autenticação e segurança
+- ✅ **Projeto 3** — Persistência com SQLite, repositories e auditoria
+- 🔄 **Projeto 4** — Testes automatizados, logs estruturados e métricas
+- ⏳ **Projeto 5** — SaaS completo com interface web e portal do cliente
 
 ---
 
 ## 👤 Autor
 
-**[Seu Nome]**
+**Cristóvão Caldeira**
 
-- GitHub: [@seu-usuario](https://github.com/seu-usuario)
-- LinkedIn: [seu-perfil](https://linkedin.com/in/seu-perfil)
-- Email: seu@email.com
+- GitHub: [@aatroxidade-glitch](https://github.com/aatroxidade-glitch)
 
 ---
 
 ## 📄 Licença
 
 Este projeto é parte de um portfólio educacional e está disponível para fins de demonstração.
-
----
-
-## 🙏 Agradecimentos
-
-Este projeto faz parte de um portfólio progressivo de 5 projetos focado em demonstrar evolução técnica real e alinhamento com o mercado de tecnologia.
 
 ---
 
